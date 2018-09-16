@@ -6,8 +6,8 @@ import sys
 
 if __name__ == '__main__':
     if len(sys.argv) == 1 or (sys.argv[1] == "-h" or sys.argv[1] == "help"):
-        filename = "help.txt"
-        if(os.path.isfile(filename) is True):
+        filename = "data/help.txt"
+        if os.path.isfile(filename) is True :
             user_data = open(filename, "r", encoding='utf-8').read()
             print(user_data)
         else:
