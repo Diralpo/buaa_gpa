@@ -1,12 +1,11 @@
-
 ## 几个合理的示例 ##
 
 
 - 输入账号和密码(并将其设置为默认账户) 
 > python main.py save username password
 
-- 输入账号和密码及保存文件名，保存在/data目录下
-> python main.py save username password username.p
+- 输入账号和密码及保存文件名，保存在`/save/user`目录下
+> python main.py save username password savename.p
 
 - 默认读入路径
 > python main.py load
@@ -25,9 +24,12 @@
 
 > python main.py help
 
-## 一些注意事项 ##
 
 
+## 说明
 
-1. 账号、密码、路径等都不要出现空白符
-2. 首次运行需要输入账号及密码
+1. 查询成绩结果保存在`/save/gpa`路径下
+2. 课表保存路径文`/save`
+3. 账号、密码、路径等都不要出现空白符
+4. 目前GPA的算法有问题，与信息北航上的结果并不一致
+
