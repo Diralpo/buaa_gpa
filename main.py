@@ -1,6 +1,9 @@
-# -*- coding: UTF-8 -*-
-
-import io, sys
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2019/7/3 17:09
+# @Author  : Diralpo
+# @Link    : https://github.com/Diralpo/
+# @Desc    :
 
 from cookie import *
 
@@ -10,26 +13,14 @@ from src import kbcx
 from src import savefile
 from src import gpa
 
-'''
-def init(): # 创建必备文件夹
-    father_path = ["save/qiangke","save/user"]
-    for path in father_path:
-        isExists=os.path.exists(path)
-        if not isExists:
-            os.makedirs(path)
-'''
 
 if __name__ == '__main__':
     if len(sys.argv) == 1 or (sys.argv[1] == "-h" or sys.argv[1] == "help"):
         filename = "help.txt"
         if(os.path.isfile(filename) == True):
             with open(filename , "r" ,encoding='utf-8') as in_file:
-                #sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='gb18030')
                 lines = in_file.read()
                 print(lines)
-                '''
-            help_text = open(filename , "r" ,encoding='utf-8').read().encode('gbk')
-            print(help_text)'''
         else:
             print("help file does not exist...")
         sys.exit()

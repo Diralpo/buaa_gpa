@@ -1,4 +1,10 @@
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2019/7/3 17:09
+# @Author  : Diralpo
+# @Link    : https://github.com/Diralpo/
+# @Desc    :
+#
 from cookie import *
 
 def save_html(file_data, path):
