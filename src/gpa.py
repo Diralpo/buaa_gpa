@@ -18,20 +18,29 @@ colorCnt = len(colorList)
 
 def gpa_buaa(grade_list):
     def switch(flo):
-        if(flo >= 85):
+        if flo == "优秀":
             return 4
-        elif flo >= 70:
-            return 3
-        elif flo >= 60:
-            return 2
-        else:
+        elif flo == "良好":
+            return 3.5
+        elif flo == "中等":
+            return 2.8
+        elif flo == "及格":
+            return 1.7
+        elif flo == "不及格":
             return 0
+        try:
+            flo = float(flo)
+        except ValueError:
+            flo = 0
+        if flo >= 60:
+            return 4 - 3 * (100 - flo) * (100 - flo) / 1600
+        return 0
 
     a = 0.0
     b = 0.0
     for agrade in grade_list:
         b = b + agrade.xuefen
-        a = a + switch(agrade.chengji) * agrade.xuefen
+        a = a + switch(agrade.zongchengji) * agrade.xuefen
     return a / b
 
 def cxcj(user_data):
@@ -93,17 +102,18 @@ def gpa(user_data):
     i = 0
     sheet.write(i, 0, '课程名称')
     sheet.write(i, 1, '成绩')
-    sheet.write(i, 2, '时间')
-    sheet.write(i, 3, '学分')
-    sheet.write(i, 4, '课程代码')
-    sheet.write(i, 5, '开课院系')
-    sheet.write(i, 6, '课程性质')
-    sheet.write(i, 7, '课程类别')
+    sheet.write(i, 2, '总成绩')
+    sheet.write(i, 3, '时间')
+    sheet.write(i, 4, '学分')
+    sheet.write(i, 5, '课程代码')
+    sheet.write(i, 6, '开课院系')
+    sheet.write(i, 7, '课程性质')
+    sheet.write(i, 8, '课程类别')
 
     sheet.col(0).width = 256 * 30
-    sheet.col(4).width = 256 * 15
-    sheet.col(5).width = 256 * 30
-    sheet.col(7).width = 256 * 30
+    sheet.col(5).width = 256 * 15
+    sheet.col(6).width = 256 * 30
+    sheet.col(8).width = 256 * 30
     pre_time = None
     t = 2
     the_style = xlwt.easyxf("font:colour {};".format(colorList[t % colorCnt]))
@@ -132,12 +142,13 @@ def gpa(user_data):
         # print('t = ', t)
         sheet.write(i, 0, agrade.name, the_style)
         sheet.write(i, 1, agrade.chengji, the_style)
-        sheet.write(i, 2, agrade.xuenian, the_style)
-        sheet.write(i, 3, agrade.xuefen, the_style)
-        sheet.write(i, 4, agrade.daima, the_style)
-        sheet.write(i, 5, agrade.yuanxi, the_style)
-        sheet.write(i, 6, agrade.xingzhi, the_style)
-        sheet.write(i, 7, agrade.leibie, the_style)
+        sheet.write(i, 2, agrade.zongchengji, the_style)
+        sheet.write(i, 3, agrade.xuenian, the_style)
+        sheet.write(i, 4, agrade.xuefen, the_style)
+        sheet.write(i, 5, agrade.daima, the_style)
+        sheet.write(i, 6, agrade.yuanxi, the_style)
+        sheet.write(i, 7, agrade.xingzhi, the_style)
+        sheet.write(i, 8, agrade.leibie, the_style)
 
         i += 1
         print(agrade)
