@@ -38,10 +38,13 @@ def gpa_buaa(grade_list):
 
     a = 0.0
     b = 0.0
+    #print(grade_list)
     for agrade in grade_list:
         b = b + agrade.xuefen
         a = a + switch(agrade.zongchengji) * agrade.xuefen
-    return a / b
+    if b != 0:
+        return a / b
+    return 0
 
 def cxcj(user_data):
     url = r'http://10.200.21.61:7001/ieas2.1/cjcx/queryTyQmcj'
@@ -83,7 +86,7 @@ def load_grade(html, grade_list):
             student_grade.append(student_grade_td)
 
     for i in student_grade:
-        if(len(i) == 15):
+        if(len(i) == 14):
             try:
                 astudent = Grade(i)
                 grade_list.append(astudent)

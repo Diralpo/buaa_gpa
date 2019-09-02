@@ -18,8 +18,8 @@ class Grade():
         self.name = tran_Nav_Str(Navigable_String[4])
         self.xingzhi = tran_Nav_Str(Navigable_String[5])
         self.leibie = tran_Nav_Str(Navigable_String[6])
-        self.zongchengji = tran_Nav_Str(Navigable_String[11])
-        self.chengji = float(tran_Nav_Str(Navigable_String[12]))
+        self.zongchengji = tran_Nav_Str(Navigable_String[10])
+        self.chengji = float(tran_Nav_Str(Navigable_String[11]))
         self.xuefen = float(tran_Nav_Str(Navigable_String[7]))
 
     def __str__(self):
