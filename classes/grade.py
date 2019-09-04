@@ -28,3 +28,9 @@ class Grade():
     def toStr(self):
         return "时间: {:<10} 学分: {:<7} 成绩: {:<7} 课程: {}\n".format(
             self.xuenian, self.xuefen, self.chengji, self.name)
+
+    def equal(self, grade):
+        if self.name == grade.name:
+            #if self.name == grade.name and self.leibie == grade.leibie and self.yuanxi == grade.yuanxi:
+            return True
+        return False

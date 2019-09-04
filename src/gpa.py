@@ -39,9 +39,17 @@ def gpa_buaa(grade_list):
     a = 0.0
     b = 0.0
     #print(grade_list)
+    the_length = len(grade_list)
+    for i in range(the_length):
+        for j in range(i):
+            if grade_list[i].equal(grade_list[j]):
+                # print(grade_list[i].name, grade_list[j].name)
+                # t = i if
+                grade_list[j].xuefen = 0
     for agrade in grade_list:
-        b = b + agrade.xuefen
-        a = a + switch(agrade.zongchengji) * agrade.xuefen
+        if agrade.xuefen > 0:
+            b = b + agrade.xuefen
+            a = a + switch(agrade.zongchengji) * agrade.xuefen
     if b != 0:
         return a / b
     return 0
@@ -155,9 +163,9 @@ def gpa(user_data):
 
         i += 1
         print(agrade)
-
+    the_gpa = gpa_buaa(grade_list)
     wbk.save("save/gpa/{}.xls".format(user_data[0]))
-    print("\n\ngpa = {}".format(gpa_buaa(grade_list)))
-    output = output + "\n\ngpa = {}".format(gpa_buaa(grade_list))
+    print("\n\ngpa = {}".format(the_gpa))
+    output = output + "\n\ngpa = {}".format(the_gpa)
     savefile.save_html(output, "save/gpa/{}/result.txt".format(user_data[0]))
 
