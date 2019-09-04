@@ -4,6 +4,8 @@
 # @Author  : Diralpo
 # @Link    : https://github.com/Diralpo/
 # @Desc    :
+#
+from bs4 import BeautifulSoup
 
 from cookie import *
 
@@ -37,3 +39,9 @@ def sign_in(user_data):# 首先登录账户
     )
     #访问该链接#
     result = opener.open(req)
+    the_html = result.read().decode('utf-8')
+    soup = BeautifulSoup(the_html, "html.parser")
+    theimages = soup.find("a", id="logout")
+    if not theimages:
+        print("存在问题，可能是账号或密码错误...")
+        sys.exit(0)

@@ -40,13 +40,11 @@ if __name__ == '__main__':
     else:
         print("unknown command...")
         sys.exit()
-    has_error = True
-    while(has_error):
-        try:
-            signin.sign_in(user_data)
-            has_error = False
-        except:
-            has_error = True
+
+    try:
+        signin.sign_in(user_data)
+    except:
+        sys.exit(0)
 
     select = int(input("请输入想进行的操作:(0：查询gpa  1：查询课表)\n"))
     if select == 0:
