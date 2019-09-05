@@ -5,6 +5,8 @@
 # @Link    : https://github.com/Diralpo/
 # @Desc    :
 
+import xlwt
+
 from cookie import *
 from classes.grade import *
 from src import savefile
@@ -38,18 +40,20 @@ def gpa_buaa(grade_list):
 
     a = 0.0
     b = 0.0
-    #print(grade_list)
+    # print(grade_list)
     the_length = len(grade_list)
     for i in range(the_length):
         for j in range(i):
             if grade_list[i].equal(grade_list[j]):
                 # print(grade_list[i].name, grade_list[j].name)
-                # t = i if
                 grade_list[j].xuefen = 0
     for agrade in grade_list:
         if agrade.xuefen > 0:
             b = b + agrade.xuefen
             a = a + switch(agrade.zongchengji) * agrade.xuefen
+        else:
+            # print(agrade.name, agrade.chengji)
+            pass
     if b != 0:
         return a / b
     return 0
@@ -94,7 +98,7 @@ def load_grade(html, grade_list):
             student_grade.append(student_grade_td)
 
     for i in student_grade:
-        if(len(i) == 14):
+        if len(i) > 0:
             try:
                 astudent = Grade(i)
                 grade_list.append(astudent)
@@ -102,12 +106,11 @@ def load_grade(html, grade_list):
                 pass
 
 def gpa(user_data):
-    import xlwt
-    html_list = cxcj(user_data)
+    html_list = cxcj(user_data) # 查询教务上各个学期的成绩，获取html列表
     grade_list = []
     output = ""
     for html in html_list:
-        load_grade(html, grade_list)
+        load_grade(html, grade_list) # 读取成绩页面的html数据
     wbk = xlwt.Workbook()
     sheet = wbk.add_sheet('sheet 1')
     i = 0
