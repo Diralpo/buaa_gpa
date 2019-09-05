@@ -41,7 +41,8 @@ def sign_in(user_data):# 首先登录账户
     result = opener.open(req)
     the_html = result.read().decode('utf-8')
     soup = BeautifulSoup(the_html, "html.parser")
-    theimages = soup.find("a", id="logout")
-    if not theimages:
+    logoutA = soup.find("a", id="logout")
+    if not logoutA:
         print("存在问题，可能是账号或密码错误...")
-        sys.exit(0)
+        return False
+    return True

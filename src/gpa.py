@@ -11,9 +11,9 @@ from cookie import *
 from classes.grade import *
 from src import savefile
 
-colorList = ['black', 'aqua', 'blue', 'brown', \
-    'bright_green', 'coral', 'cyan_ega', 'dark_purple', \
-    'dark_red', 'gold', 'dark_yellow']
+colorList = ['black', 'aqua', 'blue', 'brown',
+             'bright_green', 'coral', 'cyan_ega', 'dark_purple',
+             'dark_red', 'gold', 'dark_yellow']
 #colorList = [2, 3, 4, 6, 7, 8]
 colorCnt = len(colorList)
 
@@ -58,35 +58,38 @@ def gpa_buaa(grade_list):
         return a / b
     return 0
 
+
 def cxcj(user_data):
     url = r'http://10.200.21.61:7001/ieas2.1/cjcx/queryTyQmcj'
     req = urllib.request.Request(url=url, headers=headers)
     res = opener.open(req)
     html = res.read().decode('utf-8')
 
-    pageXnxq_from = re.findall(r'<option value="(.+?)季</option>',html)
+    pageXnxq_from = re.findall(r'<option value="(.+?)季</option>', html)
     pageXnxq_list = []
     for astr in pageXnxq_from:
-        a = astr.split("\"",1)
-        pageXnxq_list.append( a[0])
+        a = astr.split("\"", 1)
+        pageXnxq_list.append(a[0])
 
     result_html = []
 
     for pageXnxq_str in pageXnxq_list:
-        postdata={
-        'pageXnxq': pageXnxq_str
+        postdata = {
+            'pageXnxq': pageXnxq_str
         }
         postData = urllib.parse.urlencode(postdata).encode('utf-8')
-        req = urllib.request.Request(url=url,data=postData ,headers=headers)
+        req = urllib.request.Request(url=url, data=postData, headers=headers)
         res = opener.open(req)
         html = res.read().decode('utf-8')
         result_html.append(html)
-        savefile.save_html(html,"save/gpa/{}/{}.html".format(user_data[0], pageXnxq_str))
+        savefile.save_html(
+            html, "save/gpa/{}/{}.html".format(user_data[0], pageXnxq_str))
     return result_html
+
 
 def load_grade(html, grade_list):
     soup = BeautifulSoup(html, 'lxml')
-    table_list = soup(class_ = 'bot_line')
+    table_list = soup(class_='bot_line')
     student_grade = []
     for each_data in table_list:
         tr_list = each_data.find_all('tr')
@@ -94,7 +97,7 @@ def load_grade(html, grade_list):
             td_list = tr.find_all('td')
             student_grade_td = []
             for td in td_list:
-                student_grade_td.append(td.string )
+                student_grade_td.append(td.string)
             student_grade.append(student_grade_td)
 
     for i in student_grade:
@@ -102,15 +105,16 @@ def load_grade(html, grade_list):
             try:
                 astudent = Grade(i)
                 grade_list.append(astudent)
-            except:
+            except BaseException:
                 pass
 
+
 def gpa(user_data):
-    html_list = cxcj(user_data) # 查询教务上各个学期的成绩，获取html列表
+    html_list = cxcj(user_data)  # 查询教务上各个学期的成绩，获取html列表
     grade_list = []
     output = ""
     for html in html_list:
-        load_grade(html, grade_list) # 读取成绩页面的html数据
+        load_grade(html, grade_list)  # 读取成绩页面的html数据
     wbk = xlwt.Workbook()
     sheet = wbk.add_sheet('sheet 1')
     i = 0
@@ -136,10 +140,10 @@ def gpa(user_data):
     for agrade in grade_list:
         flag = False
         output = output + agrade.toStr()
-        if pre_time == None:
+        if pre_time is None:
             flag = True
             pre_time = agrade.xuenian
-        elif pre_time != None and pre_time!=agrade.xuenian:
+        elif pre_time is not None and pre_time != agrade.xuenian:
             flag = True
             pre_time = agrade.xuenian
         if flag:
@@ -151,7 +155,8 @@ def gpa(user_data):
                 t = 2
             '''
             #the_style = xlwt.easyxf("font:colour_index {};".format(colorList[t % colorCnt]))
-            the_style = xlwt.easyxf("font:colour {};".format(colorList[t % colorCnt]))
+            the_style = xlwt.easyxf(
+                "font:colour {};".format(colorList[t % colorCnt]))
             # print("change", t)
         # print('t = ', t)
         sheet.write(i, 0, agrade.name, the_style)
@@ -168,7 +173,8 @@ def gpa(user_data):
         print(agrade)
     the_gpa = gpa_buaa(grade_list)
     wbk.save("save/gpa/{}.xls".format(user_data[0]))
+    os.startfile(os.path.abspath("save/gpa/{}.xls".format(user_data[0])))
     print("\n\ngpa = {}".format(the_gpa))
     output = output + "\n\ngpa = {}".format(the_gpa)
     savefile.save_html(output, "save/gpa/{}/result.txt".format(user_data[0]))
-
+    os.startfile(os.path.abspath("save/gpa/{}/result.txt".format(user_data[0])))
