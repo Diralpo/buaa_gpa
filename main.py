@@ -48,7 +48,8 @@ def main():
     try:
         signin.sign_in(user_data)
     except BaseException:
-        sys.exit(0)
+        print("something wrong...")
+        sys.exit(-1)
 
     select = int(input("请输入想进行的操作:(0：查询gpa  1：查询课表)\n"))
     if select == 0:

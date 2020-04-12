@@ -10,12 +10,15 @@ from bs4 import BeautifulSoup
 from cookie import *
 
 def sign_in(user_data):# 首先登录账户
+    # 重置全局变量
+    GlobalVal.cookieReset()
+
     #自定义一个请求# 先get下 lt
     req = urllib.request.Request(
-        'https://sso.buaa.edu.cn/login;jsessionid=A08D2FCD121EE710A23FFC2AF24D02D6?service=http%3A%2F%2F10.200.21.61%3A7001%2Fieas2.1%2Fwelcome'
+        'https://sso.buaa.edu.cn/login?service=http%3A%2F%2Fjwxt.buaa.edu.cn%3A7001%2Fieas2.1%2Fwelcome'
     )
     #访问该链接#
-    result = opener.open(req)
+    result = GlobalVal.opener.open(req)
     #解码返回的内容#
     result=result.read().decode("utf-8")
     #找到lt
@@ -33,16 +36,34 @@ def sign_in(user_data):# 首先登录账户
     #需要给Post数据编码
     postData = urllib.parse.urlencode(postdata).encode('utf-8')
     req = urllib.request.Request(
-        'https://sso.buaa.edu.cn/login;jsessionid=A08D2FCD121EE710A23FFC2AF24D02D6?service=http%3A%2F%2F10.200.21.61%3A7001%2Fieas2.1%2Fwelcome',
+        'https://sso.buaa.edu.cn/login?service=http%3A%2F%2Fjwxt.buaa.edu.cn%3A7001%2Fieas2.1%2Fwelcome',
         postData,
         headers
     )
     #访问该链接#
-    result = opener.open(req)
+    result = GlobalVal.opener.open(req)
     the_html = result.read().decode('utf-8')
     soup = BeautifulSoup(the_html, "html.parser")
     logoutA = soup.find("a", id="logout")
     if not logoutA:
-        print("存在问题，可能是账号或密码错误...")
+        print("存在问题，可能是账号或密码错误...\n\n")
+        # print(the_html)
         return False
     return True
+
+def logout():
+    postdata={
+        'Host': 'sso.buaa.edu.cn',
+        'Referer': 'http://10.200.21.61:7001/ieas2.1/welcome'
+    }
+    #需要给Post数据编码
+    postData = urllib.parse.urlencode(postdata).encode('utf-8')
+    req = urllib.request.Request(
+        'https://sso.buaa.edu.cn/logout',
+        postData,
+        headers
+    )
+    #访问该链接#
+    result = GlobalVal.opener.open(req)
+    the_html = result.read().decode('utf-8')
+    #  print(the_html)

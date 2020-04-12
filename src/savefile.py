@@ -22,7 +22,7 @@ def access_and_save(access_url, filename, save_bool = True):
         access_url
     )
     #访问该链接#
-    result = opener.open(req)
+    result = GlobalVal.opener.open(req)
     #解码返回的内容#
     result=result.read()
     #print(chardet.detect(result))

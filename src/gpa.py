@@ -4,8 +4,9 @@
 # @Author  : Diralpo
 # @Link    : https://github.com/Diralpo/
 # @Desc    :
-
+#
 import xlwt
+from bs4 import Comment
 
 from cookie import *
 from classes.grade import *
@@ -60,17 +61,18 @@ def gpa_buaa(grade_list):
 
 
 def cxcj(user_data):
-    url = r'http://10.200.21.61:7001/ieas2.1/cjcx/queryTyQmcj'
+    url = r'http://jwxt.buaa.edu.cn:7001/ieas2.1/cjcx/queryTyQmcj'
     req = urllib.request.Request(url=url, headers=headers)
-    res = opener.open(req)
+    res = GlobalVal.opener.open(req)
     html = res.read().decode('utf-8')
 
     pageXnxq_from = re.findall(r'<option value="(.+?)季</option>', html)
+
     pageXnxq_list = []
     for astr in pageXnxq_from:
         a = astr.split("\"", 1)
         pageXnxq_list.append(a[0])
-
+    #print(pageXnxq_list)
     result_html = []
 
     for pageXnxq_str in pageXnxq_list:
@@ -79,8 +81,9 @@ def cxcj(user_data):
         }
         postData = urllib.parse.urlencode(postdata).encode('utf-8')
         req = urllib.request.Request(url=url, data=postData, headers=headers)
-        res = opener.open(req)
+        res = GlobalVal.opener.open(req)
         html = res.read().decode('utf-8')
+
         result_html.append(html)
         savefile.save_html(
             html, "save/gpa/{}/{}.html".format(user_data[0], pageXnxq_str))
@@ -89,6 +92,9 @@ def cxcj(user_data):
 
 def load_grade(html, grade_list):
     soup = BeautifulSoup(html, 'lxml')
+    comments = soup.findAll(text=lambda text:isinstance(text, Comment))
+    #[comment.extract() for comment in comments]
+
     table_list = soup(class_='bot_line')
     student_grade = []
     for each_data in table_list:
@@ -97,13 +103,14 @@ def load_grade(html, grade_list):
             td_list = tr.find_all('td')
             student_grade_td = []
             for td in td_list:
-                student_grade_td.append(td.string)
+                student_grade_td.append(td.get_text())
             student_grade.append(student_grade_td)
 
     for i in student_grade:
         if len(i) > 0:
             try:
                 astudent = Grade(i)
+                #print(astudent)
                 grade_list.append(astudent)
             except BaseException:
                 pass

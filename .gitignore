@@ -1,4 +1,6 @@
-
+build/
+save/
+dist/
 *.pyc
 *.html
 *.xls

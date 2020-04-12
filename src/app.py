@@ -49,19 +49,18 @@ class App:
             self.pwd.set('error')
 
     def logOut(self):
+        signin.logout()
         self.logInFrame.destroy()
-        sys.exit(0)
-        # self.initVal()
-        # self.initGui()
+        # sys.exit(0)
+        self.initVal()
+        self.initGui()
 
     def cxgpa(self):
         user_data = [self.username.get(), self.pwd.get()]
         gpa.gpa(user_data)
-        # kbcx.kbcx(user_data)
 
-    def kbcx(self):
+    def cxkb(self):
         user_data = [self.username.get(), self.pwd.get()]
-        # gpa.gpa(user_data)
         kbcx.kbcx(user_data)
 
     def saveUser(self):
@@ -172,7 +171,6 @@ class App:
         self.logInFrame = tk.Frame(self.root)
         self.logInFrame.place(x=70, y=80, anchor='nw')
 
-
         tk.Button(
             self.logInFrame,
             text='GPA',
@@ -196,7 +194,7 @@ class App:
             text='schedule',
             width=8,
             fg="blue",
-            command=self.kbcx).grid(
+            command=self.cxkb).grid(
             row=3,
             column=2,
             sticky=tk.N)
